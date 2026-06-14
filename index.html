@@ -368,7 +368,7 @@ const D_RECONF = new Date('2025-01-16');
 const D_ANNIV  = new Date('2026-06-16');
 
 // Set this to your Railway/Render URL after deploy. Empty = offline only.
-const API = '';
+const API = 'https://recuerdos-backend-production.up.railway.app/';
 
 function daysTogether() { return Math.floor((Date.now() - D_MET) / 86400000); }
 function isAnniversaryDay() { const n=new Date(); return n.getMonth()===5 && n.getDate()===16; }
