@@ -754,7 +754,7 @@ function bS1(){
   sObj({t:'stand',x:-195,y:78,lbl:'🍿 Dulcería'});
   sCol(-88,74,'star','Las palomitas que compartimos');
   sCol(88,74,'flower','Intentar conversar sin que se note');
-  sCol(0,-155,'letter','La película que nos hizo reflexionar');
+  sCol(0,-155,'letter','La película que nos hizo reir');
   sZone(32,-52,'Ver la película ▶',()=>startMG('movie'));
   sZone(-195,68,'Ir a la dulcería',()=>showDlg('Fernando',[
     '"Carolina, ¿qué quieres tomar?"',
@@ -775,13 +775,33 @@ function bS2(){
   sCol(-72,92,'flower','Tu sonrisa ese día');
   sCol(72,92,'photo','El momento especial');
   sZone(-20,2,'Celebrar juntos 🎂',()=>startMG('arcade'));
-  sZone(0,-88,'Entrar al cine 🎬',()=>showDlg('Carolina',[
+  sZone(0,-88,'Entrar a Check Point 🎬',()=>showDlg('Carolina',[
     '"¡Feliz cumpleaños, Fernando! 🎉"',
-    '"¿Qué quieres ver hoy?"',
+    '"¿Qué quieres  hoy?"',
     '"Tú eliges — hoy es tu día." ❤️',
   ],null));
 }
 
+// ─── SCENE 4: First kiss ─────────────────────────────
+function bS5(){
+  sObj({t:'glow',x:0,y:0,col:'#ffb0c8',r:198});sObj({t:'glow',x:-188,y:-78,col:'#ff82b2',r:92});sObj({t:'glow',x:188,y:-78,col:'#ff82b2',r:92});
+  sObj({t:'bld',x:-172,y:-172,w:182,h:128,col:'#0e0418',wc:'rgba(255,172,195,.36)',lbl:'Casa de Carolina',dw:34,dh:42});
+  [[-108,-18],[108,-18]].forEach(([x,y])=>sObj({t:'lamp',x,y,warm:true}));
+  [[-228,40],[228,40]].forEach(([x,y])=>sObj({t:'tree',x,y,r:26,col:'#0a1808'}));
+  sObj({t:'post',x:-86,y:8});
+  sCol(-46,-57,'star','La noche estrellada');
+  sCol(84,20,'flower','Los nervios de ese instante');
+  sCol(0,112,'heart','Nuestro primer beso ❤️');
+  sZone(-88,5,'La esquina mágica ✦',()=>{
+    G.walkWith=true;
+    G.chaseTarget={x:-88,y:5};
+    G.onReach=()=>{
+      G.walkWith=false;
+      spawn(-88,5,24,{sx:3,sy:3,dec:.01,r:5,col:'#ff70a0',type:'heart'});
+      showCin('En esa esquina...','te besé por primera vez. Y todo cambió.',true,()=>finishCh(4));
+    };
+  });
+}
 // ─── SCENE 3: Carolina's Birthday ────────────────────
 function bSCarol(){
   // Warm indoor birthday party scene
@@ -800,7 +820,7 @@ function bSCarol(){
   for(let i=0;i<6;i++) sObj({t:'balloon',x:-160+i*64,y:-120,col:`hsl(${i*55+300},80%,60%)`,idx:i});
   sObj({t:'glow',x:0,y:-60,col:'#ffd0e8',r:120});
   sCol(-100,-50,'star','Tu cumpleaños especial');
-  sCol(100,-30,'flower','La torta y las velas');
+  sCol(100,-30,'flower','el arreglo con el gato enojon');
   sCol(-50,80,'heart','El momento que lo cambió todo ❤️');
   sCol(50,80,'letter','La noche del 19 de diciembre');
   sZone(0,0,'Celebrar con Carolina 🎂',()=>{
@@ -836,26 +856,6 @@ function bSDecl(){
   });
 }
 
-// ─── SCENE 4: First kiss ─────────────────────────────
-function bS5(){
-  sObj({t:'glow',x:0,y:0,col:'#ffb0c8',r:198});sObj({t:'glow',x:-188,y:-78,col:'#ff82b2',r:92});sObj({t:'glow',x:188,y:-78,col:'#ff82b2',r:92});
-  sObj({t:'bld',x:-172,y:-172,w:182,h:128,col:'#0e0418',wc:'rgba(255,172,195,.36)',lbl:'Casa de Carolina',dw:34,dh:42});
-  [[-108,-18],[108,-18]].forEach(([x,y])=>sObj({t:'lamp',x,y,warm:true}));
-  [[-228,40],[228,40]].forEach(([x,y])=>sObj({t:'tree',x,y,r:26,col:'#0a1808'}));
-  sObj({t:'post',x:-86,y:8});
-  sCol(-46,-57,'star','La noche estrellada');
-  sCol(84,20,'flower','Los nervios de ese instante');
-  sCol(0,112,'heart','Nuestro primer beso ❤️');
-  sZone(-88,5,'La esquina mágica ✦',()=>{
-    G.walkWith=true;
-    G.chaseTarget={x:-88,y:5};
-    G.onReach=()=>{
-      G.walkWith=false;
-      spawn(-88,5,24,{sx:3,sy:3,dec:.01,r:5,col:'#ff70a0',type:'heart'});
-      showCin('En esa esquina...','te besé por primera vez. Y todo cambió.',true,()=>finishCh(4));
-    };
-  });
-}
 
 // ─── SCENE 5: Reconfirmation ─────────────────────────
 function bS6(){
@@ -865,7 +865,7 @@ function bS6(){
   [[-228,40],[228,40]].forEach(([x,y])=>sObj({t:'tree',x,y,r:26,col:'#0a1808'}));
   sObj({t:'post',x:-86,y:8});
   sCol(-46,-57,'star','16 de enero de 2025');
-  sCol(84,20,'flower','Cuando dijiste que sí');
+  sCol(84,20,'flower','Cuando me entregaste una cajita misteriosa');
   sCol(0,112,'heart','El momento que lo cambió todo ❤️');
   sZone(-88,5,'El momento especial ✦',()=>finishCh(5));
 }
@@ -916,7 +916,7 @@ function bS10(){
   sCol(-110,-72,'letter','Tu primera carta para mí');sCol(110,-72,'letter','La carta del primer mes');
   sCol(-52,87,'letter','La que escribiste llorando');sCol(52,87,'letter','La última que guardé');sCol(0,-112,'letter','Nuestra historia completa');
   sZone(-22,-14,'Ver cartas reales 💌',()=>openCartas());
-  sZone(-22,55,'Leer el álbum ❤️',()=>openAlbum());
+  sZone(-22,55,'ver el álbum ❤️',()=>openAlbum());
   sZone(80,-14,'Completar el recorrido ✨',()=>finishCh(10),55);
 }
 
