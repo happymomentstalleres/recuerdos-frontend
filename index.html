@@ -709,7 +709,7 @@ function buildScene(idx){
   if(idx>=1){P2.visible=true;P2.met=true;P2.x=P1.x+22;P2.y=P1.y;}
   else{P2.visible=false;P2.met=false;}
 
-  const builders=[bS0,bS1,bS2,bS5,bSCarol,bSDecl,bS6,bS7,bS8,bS9,bS10];
+  const builders=[bS0,bS1,bS2,bSCarol,bSDecl,bS5,bS6,bS7,bS8,bS9,bS10];
   builders[idx]();
   G.totalCols=colItems.length;
   updateHUD(idx);
