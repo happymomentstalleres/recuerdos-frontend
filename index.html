@@ -1728,16 +1728,11 @@ document.getElementById('ssub').textContent=daysTogether()+' días juntos — '+
 async function startGame(){
   initAudio();resumeAC();
 
-  // Play custom music IMMEDIATELY on click if preloaded
-  if(savedMusicSrc){
-    const audio=document.getElementById('custom-audio');
-    audio.src=savedMusicSrc;
-    audio.volume=0.7;
-    customMusicActive=true;
-    pianoMusicActive=false;
-    audio.play().catch(()=>{});
-  }
+ 
+    // Play saved music using the user click context
+  if(savedMusicSrc){const a=document.getElementById('custom-audio');a.src=savedMusicSrc;a.volume=0.7;customMusicActive=true;pianoMusicActive=false;a.play();}
 
+  document.getElementById('ss').classList.add('out');
   document.getElementById('ss').classList.add('out');
   setTimeout(async()=>{
     document.getElementById('ss').style.display='none';
