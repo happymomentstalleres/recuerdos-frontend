@@ -1593,8 +1593,10 @@ async function loadSavedMusic(){
     const saved = await idbGet('save','music');
     if(saved && saved.src){
       playMusicFromBase64(saved.src, saved.name);
+      return true;
     }
   }catch(e){}
+  return false;
 }
 function usePianoMusic(){
   const audio=document.getElementById('custom-audio');
@@ -1699,11 +1701,11 @@ async function startGame(){
     document.getElementById('ss').style.display='none';
     const hasSave=await loadGame();
     buildScene(G.ch);showChTitle(G.ch);
-    playMelody();
     requestAnimationFrame(gameLoop);
     checkAnniversary();
-    // Restore custom music if previously saved
-    await loadSavedMusic();
+    // Restore custom music — if none saved, fall back to piano
+    const musicRestored = await loadSavedMusic();
+    if(!musicRestored) playMelody();
     // Show intro after a small delay if first time
     if(!hasSave){
       // intro is already visible, player dismisses it
