@@ -1717,9 +1717,11 @@ async function startGame(){
     buildScene(G.ch);showChTitle(G.ch);
     requestAnimationFrame(gameLoop);
     checkAnniversary();
-    // Restore custom music — if none saved, fall back to piano
-    const musicRestored = await loadSavedMusic();
-    if(!musicRestored) playMelody();
+    // Wait a moment then play music (after user interaction unlocks autoplay)
+    setTimeout(async()=>{
+      const musicRestored = await loadSavedMusic();
+      if(!musicRestored) playMelody();
+    }, 800);
     // Show intro after a small delay if first time
     if(!hasSave){
       // intro is already visible, player dismisses it
