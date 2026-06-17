@@ -1578,14 +1578,28 @@ async function loadCustomMusic(evt){
 function playMusicFromBase64(base64, name){
   const audio=document.getElementById('custom-audio');
   audio.src=base64; audio.volume=0.7;
+  // Stop piano immediately before anything else
   if(melodyTimeout){clearTimeout(melodyTimeout);melodyTimeout=null;}
+  if(AC){
+    // Suspend audio context to kill all piano nodes
+    AC.suspend();
+    setTimeout(()=>AC.resume(),100);
+  }
   stopAmb();
+  customMusicActive=true;pianoMusicActive=false;musicPaused=false;
   audio.play().then(()=>{
-    customMusicActive=true;pianoMusicActive=false;musicPaused=false;
     document.getElementById('music-name').textContent='♪ '+(name||'').replace(/\.[^.]+$/,'');
     document.getElementById('btn-toggle').textContent='⏸ Pausar';
-    showToast('🎵 Reproduciendo: '+(name||'').replace(/\.[^.]+$/,''));
-  }).catch(()=>showToast('Toca la pantalla primero para reproducir'));
+  }).catch(()=>{
+    // Autoplay blocked — play on first user interaction
+    const unlock=()=>{
+      audio.play().catch(()=>{});
+      document.removeEventListener('touchstart',unlock);
+      document.removeEventListener('click',unlock);
+    };
+    document.addEventListener('touchstart',unlock,{once:true});
+    document.addEventListener('click',unlock,{once:true});
+  });
 }
 
 async function loadSavedMusic(){
