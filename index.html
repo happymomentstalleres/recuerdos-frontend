@@ -1602,14 +1602,24 @@ function playMusicFromBase64(base64, name){
   });
 }
 
-async function loadSavedMusic(){
+let savedMusicSrc = null;
+let savedMusicName = null;
+
+async function preloadSavedMusic(){
   try{
     const saved = await idbGet('save','music');
     if(saved && saved.src){
-      playMusicFromBase64(saved.src, saved.name);
-      return true;
+      savedMusicSrc = saved.src;
+      savedMusicName = saved.name;
     }
   }catch(e){}
+}
+
+async function loadSavedMusic(){
+  if(savedMusicSrc){
+    playMusicFromBase64(savedMusicSrc, savedMusicName);
+    return true;
+  }
   return false;
 }
 function usePianoMusic(){
@@ -1702,7 +1712,8 @@ function gameLoop(ts){
     t2+=.016;requestAnimationFrame(loop2);
   }
   loop2();
-  document.getElementById('ssub').textContent=daysTogether()+' días juntos — '+ME+' & '+HER+' ❤️';
+document.getElementById('ssub').textContent=daysTogether()+' días juntos — '+ME+' & '+HER+' ❤️';
+  preloadSavedMusic(); // ← agrega esta línea
 })();
 
 // ═══════════════════════════════════════════
@@ -1711,11 +1722,10 @@ function gameLoop(ts){
 async function startGame(){
   initAudio();resumeAC();
 
-  // Try to play custom music IMMEDIATELY on user click (before any async)
-  const savedMusic = await idbGet('save','music').catch(()=>null);
-  if(savedMusic && savedMusic.src){
+  // Play custom music IMMEDIATELY on click if preloaded
+  if(savedMusicSrc){
     const audio=document.getElementById('custom-audio');
-    audio.src=savedMusic.src;
+    audio.src=savedMusicSrc;
     audio.volume=0.7;
     customMusicActive=true;
     pianoMusicActive=false;
@@ -1729,7 +1739,6 @@ async function startGame(){
     buildScene(G.ch);showChTitle(G.ch);
     requestAnimationFrame(gameLoop);
     checkAnniversary();
-    // Only play piano if no custom music
     if(!customMusicActive) playMelody();
     if(!hasSave){
       // intro visible
