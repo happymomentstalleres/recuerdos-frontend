@@ -169,7 +169,7 @@ body{background:#000;overflow:hidden;width:100vw;height:100vh;touch-action:none;
   <canvas id="ssc"></canvas>
   <div class="stitle">Nuestros Recuerdos</div>
   <div class="ssub" id="ssub">Fernando &amp; Carolina ❤️</div>
-  <button class="sbtn" onclick="startGame()">Comenzar ❤️</button>
+  <button class="sbtn" id="start-btn" onclick="startGame()" disabled style="opacity:.5;cursor:default;">Cargando... ❤️</button>
 </div>
 
 <!-- INTRO MESSAGE -->
@@ -1713,7 +1713,13 @@ function gameLoop(ts){
   }
   loop2();
 document.getElementById('ssub').textContent=daysTogether()+' días juntos — '+ME+' & '+HER+' ❤️';
-  preloadSavedMusic(); // ← agrega esta línea
+  preloadSavedMusic().then(()=>{
+    const btn=document.getElementById('start-btn');
+    btn.disabled=false;
+    btn.style.opacity='1';
+    btn.style.cursor='pointer';
+    btn.textContent='Comenzar ❤️';
+  });
 })();
 
 // ═══════════════════════════════════════════
