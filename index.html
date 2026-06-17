@@ -1710,6 +1710,18 @@ function gameLoop(ts){
 // ═══════════════════════════════════════════
 async function startGame(){
   initAudio();resumeAC();
+
+  // Try to play custom music IMMEDIATELY on user click (before any async)
+  const savedMusic = await idbGet('save','music').catch(()=>null);
+  if(savedMusic && savedMusic.src){
+    const audio=document.getElementById('custom-audio');
+    audio.src=savedMusic.src;
+    audio.volume=0.7;
+    customMusicActive=true;
+    pianoMusicActive=false;
+    audio.play().catch(()=>{});
+  }
+
   document.getElementById('ss').classList.add('out');
   setTimeout(async()=>{
     document.getElementById('ss').style.display='none';
@@ -1717,14 +1729,10 @@ async function startGame(){
     buildScene(G.ch);showChTitle(G.ch);
     requestAnimationFrame(gameLoop);
     checkAnniversary();
-    // Wait a moment then play music (after user interaction unlocks autoplay)
-    setTimeout(async()=>{
-      const musicRestored = await loadSavedMusic();
-      if(!musicRestored) playMelody();
-    }, 800);
-    // Show intro after a small delay if first time
+    // Only play piano if no custom music
+    if(!customMusicActive) playMelody();
     if(!hasSave){
-      // intro is already visible, player dismisses it
+      // intro visible
     } else {
       document.getElementById('intro').classList.add('out');
       showToast('💾 Bienvenido de nuevo, '+ME+' — '+daysTogether()+' días juntos ❤️');
